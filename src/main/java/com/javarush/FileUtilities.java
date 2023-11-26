@@ -5,13 +5,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
-public class FileUtilities {
+class FileUtilities {
     /*
     Method gets data from the file at the specified path
     Params: filePath - path to the data file
     Returns: data from file
      */
-    public List<String> getDataFromFile(String filePath) {
+    List<String> getDataFromFile(String filePath) {
         Path path = Path.of(filePath);
         List<String> fileData;
         try {
@@ -19,7 +19,6 @@ public class FileUtilities {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
         return fileData;
     }
 
@@ -29,12 +28,30 @@ public class FileUtilities {
             fileData - data to be written to the file
     Creates a data file
      */
-    public void writeDataToFile(String filePath, List<String> fileData) {
+    void writeDataToFile(String filePath, List<String> fileData) {
         Path path = Path.of(filePath);
         try {
             Files.write(path, fileData);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    String getPathForDecryptedFile(String existedPath) {
+        return existedPath.replace(".txt", "") + "[DECRYPTED].txt";
+    }
+
+    String getPathForEncryptedFile(String existedPath) {
+        return existedPath.replace(".txt", "") + "[ENCRYPTED].txt";
+    }
+
+    void writeDecryptedDataToNewFile(String existedPath, List<String> fileData) {
+        String newPath = getPathForDecryptedFile(existedPath);
+        writeDataToFile(newPath, fileData);
+    }
+
+    void writeEncryptedDataToNewFile(String existedPath, List<String> fileData) {
+        String newPath = getPathForEncryptedFile(existedPath);
+        writeDataToFile(newPath, fileData);
     }
 }

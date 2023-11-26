@@ -7,32 +7,35 @@ public class Runner {
     Decryption decryption = new Decryption();
     BruteForce bruteForce = new BruteForce();
     FileUtilities fileUtilities = new FileUtilities();
+    ArgConstants argConstants = new ArgConstants();
+    ConsoleArgs consoleArgs = new ConsoleArgs();
+    JARArgs jarArgs = new JARArgs();
 
     /*
     Method performs the task according to the command passed in the parameters
     Params: args - parameters for application
     */
     public void runCommand(String[] args) {
-        List<String> fileData = fileUtilities.getDataFromFile(args[1]);
+        List<String> fileData = fileUtilities.getDataFromFile(args[argConstants.filePath]);
 
-        if (args[0].equals(CommandEnum.BRUTE_FORCE.toString()) || args[0].equals("b")) {
+        if (consoleArgs.isCommandBruteForce(args[argConstants.commandName]) ||
+                jarArgs.isCommandBruteForce(args[argConstants.commandName])) {
             var resultKey = bruteForce.bruteForceKey(fileData);
             System.out.println(resultKey);
             var resultData = decryption.decryptData(fileData, Integer.parseInt(resultKey));
-            fileUtilities.writeDataToFile(args[1].replace(".txt","") + "[DECRYPTED].txt",
-                    resultData);
+            fileUtilities.writeDecryptedDataToNewFile(args[argConstants.filePath], resultData);
         }
 
-        if (args[0].equals(CommandEnum.ENCRYPT.toString()) || args[0].equals("e")) {
-            var resultData = encryption.encryptData(fileData, Integer.parseInt(args[2]));
-            fileUtilities.writeDataToFile(args[1].replace(".txt","") + "[ENCRYPTED].txt",
-                    resultData);
+        if (consoleArgs.isCommandEncrypt(args[argConstants.commandName]) ||
+                jarArgs.isCommandEncrypt(args[argConstants.commandName])) {
+            var resultData = encryption.encryptData(fileData, Integer.parseInt(args[argConstants.key]));
+            fileUtilities.writeEncryptedDataToNewFile(args[argConstants.filePath], resultData);
         }
 
-        if (args[0].equals(CommandEnum.DECRYPT.toString()) || args[0].equals("d")) {
-            var resultData = decryption.decryptData(fileData, Integer.parseInt(args[2]));
-            fileUtilities.writeDataToFile(args[1].replace(".txt","") + "[DECRYPTED].txt",
-                    resultData);
+        if (consoleArgs.isCommandDecrypt(args[argConstants.commandName]) ||
+                jarArgs.isCommandDecrypt(args[argConstants.commandName])) {
+            var resultData = decryption.decryptData(fileData, Integer.parseInt(args[argConstants.key]));
+            fileUtilities.writeDecryptedDataToNewFile(args[argConstants.filePath], resultData);
         }
     }
 }

@@ -1,6 +1,6 @@
 package com.javarush;
 
-public enum CommandEnum {
+enum CommandEnum {
     ENCRYPT,
     DECRYPT,
     BRUTE_FORCE

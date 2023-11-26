@@ -12,20 +12,29 @@ public class Main {
     Params: args - available parameters when starting the program
     Returns: parameters for application
     */
-    public static String[] getArgsFromStartMethod(String[] args) {
+    static String[] getArgsFromStartMethod(String[] args) {
         if (args.length > 0) {
-            if (args.length == 3 || (args[0].equals(CommandEnum.BRUTE_FORCE.toString()) && args.length == 2)) {
-                StartWithJAR startWithJAR = new StartWithJAR();
-                startWithJAR.checkArgs(args);
+            if (areThereEnoughParametersToRun(args)) {
+                JARArgs jarArgs = new JARArgs();
+                jarArgs.checkArgs(args);
                 return args;
             } else {
-                StartWithConsole startWithConsole = new StartWithConsole();
-                return startWithConsole.getArgs();
+                ConsoleArgs consoleArgs = new ConsoleArgs();
+                return consoleArgs.getArgs();
             }
         } else {
-            StartWithConsole startWithConsole = new StartWithConsole();
-            return startWithConsole.getArgs();
+            ConsoleArgs consoleArgs = new ConsoleArgs();
+            return consoleArgs.getArgs();
         }
+    }
+
+    static boolean areThereEnoughParametersToRun(String[] args) {
+        ConsoleArgs consoleArgs = new ConsoleArgs();
+        ArgConstants argConstants = new ArgConstants();
+        boolean areAllParameters = args.length == argConstants.argCount;
+        boolean areAllParametersForBrutForce = consoleArgs.isCommandBruteForce(args[argConstants.commandName]) &&
+                args.length == argConstants.argCountForBrutForce;
+        return areAllParameters || areAllParametersForBrutForce;
     }
 }
 
