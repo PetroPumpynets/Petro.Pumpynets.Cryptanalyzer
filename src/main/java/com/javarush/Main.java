@@ -29,10 +29,10 @@ public class Main {
     }
 
     static boolean areThereEnoughParametersToRun(String[] args) {
-        ConsoleArgs consoleArgs = new ConsoleArgs();
+        JARArgs jarArgs = new JARArgs();
         ArgConstants argConstants = new ArgConstants();
         boolean areAllParameters = args.length == argConstants.argCount;
-        boolean areAllParametersForBrutForce = consoleArgs.isCommandBruteForce(args[argConstants.commandName]) &&
+        boolean areAllParametersForBrutForce = jarArgs.isCommandBruteForce(args[argConstants.commandName]) &&
                 args.length == argConstants.argCountForBrutForce;
         return areAllParameters || areAllParametersForBrutForce;
     }
